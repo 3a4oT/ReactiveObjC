@@ -31,7 +31,7 @@ jobs:
           dest: ${{env.FRAMEWORK_NAME}}.zip
 
       - name: Set SPM SIGNATURE
-        run: echo "SPM_SIGNATURE=$(echo swift package compute-checksum ${{env.FRAMEWORK_NAME}}.zip)" >> $GITHUB_ENV
+        run: echo "SPM_SIGNATURE=$(swift package compute-checksum ${{env.FRAMEWORK_NAME}}.zip)" >> $GITHUB_ENV
 
       - name: Create Release
         id: create_release

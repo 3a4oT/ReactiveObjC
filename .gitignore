@@ -14,9 +14,17 @@ xcuserdata
 profile
 *.moved-aside
 PlaygroundUtility.remap
+*.txt
 
 # SwiftPM
 .build
 
+#XCFramework
+*.xcframework
+archives
+
 # Carthage
 Carthage/Build
+
+#Fastlane
+vendor

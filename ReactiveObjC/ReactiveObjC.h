@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TargetConditionals.h"
 
 //! Project version number for ReactiveObjC.
 FOUNDATION_EXPORT double ReactiveObjCVersionNumber;
@@ -62,7 +63,7 @@ FOUNDATION_EXPORT const unsigned char ReactiveObjCVersionString[];
 #import <ReactiveObjC/RACUnit.h>
 
 #if TARGET_OS_WATCH
-#elif TARGET_OS_IOS || TARGET_OS_TV
+#elif TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_MACCATALYST
 	#import <ReactiveObjC/UIBarButtonItem+RACCommandSupport.h>
 	#import <ReactiveObjC/UIButton+RACCommandSupport.h>
 	#import <ReactiveObjC/UICollectionReusableView+RACSignalSupport.h>
@@ -74,12 +75,10 @@ FOUNDATION_EXPORT const unsigned char ReactiveObjCVersionString[];
 	#import <ReactiveObjC/UITextField+RACSignalSupport.h>
 	#import <ReactiveObjC/UITextView+RACSignalSupport.h>
 
-	#if TARGET_OS_IOS
+	#if TARGET_OS_IOS || TARGET_OS_MACCATALYST
 		#import <ReactiveObjC/NSURLConnection+RACSupport.h>
 		#import <ReactiveObjC/UIStepper+RACSignalSupport.h>
 		#import <ReactiveObjC/UIDatePicker+RACSignalSupport.h>
-		#import <ReactiveObjC/UIAlertView+RACSignalSupport.h>
-		#import <ReactiveObjC/UIActionSheet+RACSignalSupport.h>
 		#import <ReactiveObjC/MKAnnotationView+RACSignalSupport.h>
 		#import <ReactiveObjC/UIImagePickerController+RACSignalSupport.h>
 		#import <ReactiveObjC/UIRefreshControl+RACCommandSupport.h>

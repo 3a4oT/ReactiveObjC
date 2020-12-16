@@ -1,0 +1,65 @@
+name: "ReactiveObjC CI"
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  Cocoapods:
+    name: Lint podspec
+    runs-on: macOS-latest
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_12.2.app/Contents/Developer
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Lint Podspec
+        run: pod lib lint ReactiveObjC.podspec --allow-warnings
+
+  Tests:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        config:
+          - scheme: "ReactiveObjC-macOS"
+            action: test
+            sdk: macosx
+            destination: "arch=x86_64"
+          - scheme: "ReactiveObjC-iOS"
+            action: test
+            sdk: iphonesimulator
+            destination: "name=iPhone 12"
+          - scheme: "ReactiveObjC-tvOS"
+            action: test
+            sdk: appletvsimulator
+            destination: "name=Apple TV"
+          - scheme: "ReactiveObjC-watchOS"
+            action: build
+            sdk: watchsimulator
+            destination: "name=Apple Watch Series 4 - 40mm"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Updating submodules
+        run: git submodule update --init --recursive
+      - name: Build and Test
+        run: xcodebuild ${{ matrix.config.action }} -workspace ReactiveObjC.xcworkspace -scheme "${{ matrix.config.scheme }}" -sdk "${{ matrix.config.sdk }}" -destination "${{ matrix.config.destination }}" RUN_CLANG_STATIC_ANALYZER=NO
+
+  XCFramework:
+    name: Build xcframework
+    runs-on: macOS-latest
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_12.2.app/Contents/Developer
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Carthage update
+        run: carthage update --no-build
+
+      - name: Build XCFramework
+        run: xcodebuild -workspace "ReactiveObjC.xcworkspace" -scheme "XCFramework"
